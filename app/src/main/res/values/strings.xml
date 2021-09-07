@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Jokenpo Nerd</string>
+
+    <!--Tela SplashSreen-->
+    <string name="txt_bem_vindo">"Bem vindo ao Jogo Jokenpô"</string>
+    <string name="txt_dizeres_jogo">Toda cidade inteligente também tem diversão atrelada a tecnologia, então espero que se divirtam!</string>
+
+    <!--Tela Cadastro-->
+    <string name="txt_seu_usuario">INSIRA SEU USUÁRIO</string>
+    <string name="txt_nome_usuario">Usuário</string>
+    <string name="txt_btn_entrar">Entrar</string>
+    <string name="txt_sair_app">Sair do App</string>
+    <string name="txt_erro_preencha_campo_usuario">Vamos lá… qual seu apelido?</string>
+    <string name="txt_msg_erro_conexao">Padauã, verifique sua conexão e tente novamente!</string>
+
+    <!--Tela do game-->
+    <string name="txt_jogador_um">Jogador 1</string>
+    <string name="txt_jogador_dois">Jogador 2</string>
+    <string name="escolha_opcao">Escolha uma opção abaixo</string>
+    <string name="txt_btn_jokenpo">Jokenpo</string>
+    <string name="txt_pedra">pedra</string>
+    <string name="txt_papel">papel</string>
+    <string name="txt_tesoura">tesoura</string>
+    <string name="txt_lagarto">lagarto</string>
+    <string name="txt_spock">spock</string>
+
+    <string name="txt_versos">X</string>
+
+    <string-array name="opcoes">
+        <item>@string/txt_pedra</item>
+        <item>@string/txt_papel</item>
+        <item>@string/txt_tesoura</item>
+    </string-array>
+
+    <string-array name="opcoesNerd">
+        <item>@string/txt_pedra</item>
+        <item>@string/txt_papel</item>
+        <item>@string/txt_tesoura</item>
+        <item>@string/txt_lagarto</item>
+        <item>@string/txt_spock</item>
+    </string-array>
+
+    <string-array name="nomes_jogador_dois">
+        <item>"Pedro"</item>
+        <item>"Lucas"</item>
+        <item>"Maria"</item>
+        <item>"Maya"</item>
+        <item>"Gabriela"</item>
+        <item>"Guilherme"</item>
+        <item>"Noobmaster 69"</item>
+        <item>"Lekizinho"</item>
+        <item>"João"</item>
+        <item>"Brabo65"</item>
+        <item>"O Melhor"</item>
+
+    </string-array>
+
+    <!--Constante Ganhador-->
+    <string name="txt_voce_ganhou">Você Ganhou! :)</string>
+    <string name="txt_voce_perdeu">Você perdeu! :("</string>
+    <string name="txt_empatou">Empatou, vamos outra? :)</string>
+
+    <!--Menu Placar-->
+    <string name="txt_placar">Placar</string>
+    <string name="txt_sair">Sair do aplicativo</string>
+    <string name="txt_resultado_usuario">Resultado da partida</string>
+    <string name="txt_percentual_vitoria">Sua média de vitórias</string>
+    <string name="txt_percent">%</string>
+    <string name="txt_habilitar_nerd">Habilitar versão Nerd</string>
+    <string name="txt_desabilitar_nerd">Desabilitar versão Nerd</string>
+
+    <!--Alert Dialog-->
+    <string name="aviso_sair_apk">Ei… Está prestes a sair do Jokenpô</string>
+    <string name="txt_sair_apk">Deseja realmente sair do aplicativo e apagar todo seu placar de Jogador Master?</string>
+    <string name="txt_sair_sim">Sim</string>
+    <string name="txt_nao_sair">Não</string>
+
+    <!--Sala Activity-->
+    <string name="txt_sem_usuario_jogando">Que pena! Servidores vazios. Crie uma sala e chame seu amigo.</string>
+    <string name="txt_btn_criar_sala">Criar Sala</string>
+
+</resources>

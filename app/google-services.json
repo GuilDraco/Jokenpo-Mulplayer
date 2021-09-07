@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "57910534292",
+    "project_id": "jokenpo-nerd",
+    "storage_bucket": "jokenpo-nerd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57910534292:android:aeff6d700bf16cd3f8d481",
+        "android_client_info": {
+          "package_name": "com.game.jokenponerd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57910534292-mkd8sl603mev2lo1vtp8jl17i94nesno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.game.jokenponerd",
+            "certificate_hash": "a6d257a30221878cf72a4cbcbedf7e4f42da901b"
+          }
+        },
+        {
+          "client_id": "57910534292-t49f2fo66kna5tcl12umrlv1i3uouq9a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChqtk-VhdpW-kwV4pvByEtP6QnF39eANo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57910534292-t49f2fo66kna5tcl12umrlv1i3uouq9a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
