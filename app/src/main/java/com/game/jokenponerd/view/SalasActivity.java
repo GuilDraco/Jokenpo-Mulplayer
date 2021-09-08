@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.game.jokenponerd.helper.Constantes.JOGADOR_DOIS;
 import static com.game.jokenponerd.helper.Constantes.SALA_NOME;
@@ -107,7 +108,7 @@ public class SalasActivity extends AppCompatActivity {
     private void recuperaNomeSegundoJogador() {
         DatabaseReference roomsRef = firebaseDatabase.getReference();
         roomsRef.child("salas").child(salaNome).child("player2").child("nome").get().addOnCompleteListener(task -> {
-            jogador_dois = String.valueOf(task.getResult().getValue());
+            jogador_dois = String.valueOf(Objects.requireNonNull(task.getResult()).getValue());
             irParaJogo();
         });
     }

@@ -1,6 +1,8 @@
 package com.game.jokenponerd.helper;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +22,21 @@ public class GerenciadorDialogos {
         alertDialogBuilder.setMessage(messageId);
         alertDialogBuilder.setPositiveButton(positiveButtonId, onClickListenerSim);
         alertDialogBuilder.setNegativeButton(negativeButtonId, onClickListenerNao);
+        alertDialogBuilder.setCancelable(true);
+
+        return alertDialogBuilder.create();
+    }
+
+    public static AlertDialog buildAlertDialogRestart(Context context,
+                                                      String titleId,
+                                                      @StringRes int messageId,
+                                                      @StringRes int positiveButtonId,
+                                                      AlertDialog.OnClickListener onClickListenerSim) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle(titleId);
+        alertDialogBuilder.setMessage(messageId);
+        alertDialogBuilder.setPositiveButton(positiveButtonId, onClickListenerSim);
         alertDialogBuilder.setCancelable(true);
 
         return alertDialogBuilder.create();

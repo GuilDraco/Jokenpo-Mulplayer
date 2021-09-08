@@ -17,6 +17,7 @@ public class GerenciadorSharedPreferences {
     private static final String CRIOU_SALA = "criou_sala";
     private static final String JOGADA_JOGADOR_UM = "jogada_jogador_um";
     private static final String JOGADA_JOGADOR_DOIS = "jogada_jogador_dois";
+    private static final String FINALIZOU_PARTIDA = "finalizou_partida";
 
     public static void setNomeUsuario(Context context, String nome_usuario) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_SESSAO, MODE_PRIVATE);
@@ -94,5 +95,18 @@ public class GerenciadorSharedPreferences {
     public static String getJogadaSegundoJogador(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_SESSAO, MODE_PRIVATE);
         return prefs.getString(JOGADA_JOGADOR_DOIS, "");
+    }
+
+    public static void setFinalizouPartida(Context context, boolean finalizou) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_SESSAO, MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(FINALIZOU_PARTIDA, finalizou);
+        editor.apply();
+    }
+
+    public static boolean getFinalizouPartida(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_SESSAO, MODE_PRIVATE);
+        return prefs.getBoolean(FINALIZOU_PARTIDA, false);
     }
 }

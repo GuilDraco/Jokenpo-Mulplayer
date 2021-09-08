@@ -79,4 +79,9 @@
     <string name="txt_sem_usuario_jogando">Que pena! Servidores vazios. Crie uma sala e chame seu amigo.</string>
     <string name="txt_btn_criar_sala">Criar Sala</string>
 
+
+    <string name="aviso_resultado">…</string>
+    <string name="limpar_dados_jogada">Deseja jogar novamente?</string>
+    <string name="txt_claro">Claro!</string>
+
 </resources>

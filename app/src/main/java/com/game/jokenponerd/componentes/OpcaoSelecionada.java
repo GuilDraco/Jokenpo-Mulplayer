@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.game.jokenponerd.R;
 import com.game.jokenponerd.helper.GerenciadorSharedPreferences;
-import com.game.jokenponerd.model.Jogada.Jogada;
+import com.game.jokenponerd.model.Jogada.Sala;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,28 +37,42 @@ public class OpcaoSelecionada {
         if(GerenciadorSharedPreferences.getCriouSala(context)){
             escolhaJogador(escolhaJogador, getImageViewJogadorUm);
             databaseReference = firebaseDatabase.getReference("salas/" + salaNome + "/" + "player1" + "/jogada");
-            databaseReference.setValue(escolhaJogador);
 
-            recuperaJogada(context, firebaseDatabase, salaNome, getImageViewJogadorDois, "player2", getTextViewResultado, radioGroup, radioGroupNerd);
         }else {
             escolhaJogador(escolhaJogador, getImageViewJogadorDois);
             databaseReference = firebaseDatabase.getReference("salas/" + salaNome +"/" +"player2"+ "/jogada");
-            databaseReference.setValue(escolhaJogador);
 
-            recuperaJogada(context, firebaseDatabase, salaNome, getImageViewJogadorUm, "player1", getTextViewResultado, radioGroup, radioGroupNerd);
         }
+        databaseReference.setValue(escolhaJogador);
+        recuperarViewJogador(context, salaNome, getImageViewJogadorUm, getImageViewJogadorDois, getTextViewResultado, radioGroup, radioGroupNerd);
     }
 
-    private void recuperaJogada(Context context, FirebaseDatabase firebaseDatabase, String salaNome, ImageView getImageView, String player, TextView getTextViewResultado, RadioGroup radioGroup, RadioGroup radioGroupNerd) {
+    private void recuperarViewJogador(Context context, String salaNome, ImageView getImageViewJogadorUm,
+                                      ImageView getImageViewJogadorDois, TextView getTextViewResultado, RadioGroup radioGroup, RadioGroup radioGroupNerd) {
 
-        DatabaseReference ref = firebaseDatabase.getReference("salas/"+salaNome+"/"+player);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference ref = firebaseDatabase.getReference("salas/"+salaNome);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Jogada jog = dataSnapshot.getValue(Jogada.class);
-                if(jog.getJogada()!=null){
-                    escolhaJogador(jog.getJogada(), getImageView);
-                    new RegraGanhador(context, getTextViewResultado, radioGroup, radioGroupNerd, salaNome);
+                Sala sala = dataSnapshot.getValue(Sala.class);
+                assert sala != null;
+                if(sala.getPlayer1()!=null){
+                    String jogadaPrimeiroJogador = sala.getPlayer1().get("jogada");
+                    String jogadaSegundoJogador = sala.getPlayer2().get("jogada");
+
+                    if((jogadaPrimeiroJogador != null && jogadaSegundoJogador == null) && GerenciadorSharedPreferences.getCriouSala(context)){
+                        escolhaJogador(jogadaPrimeiroJogador, getImageViewJogadorUm);
+                        getImageViewJogadorDois.setImageResource(R.drawable.img_vazio);
+                    }else if((jogadaSegundoJogador != null && jogadaPrimeiroJogador == null) && !GerenciadorSharedPreferences.getCriouSala(context)){
+                        escolhaJogador(jogadaSegundoJogador, getImageViewJogadorDois);
+                        getImageViewJogadorUm.setImageResource(R.drawable.img_vazio);
+                    }else if(jogadaPrimeiroJogador != null && jogadaSegundoJogador != null){
+                        escolhaJogador(jogadaPrimeiroJogador, getImageViewJogadorUm);
+                        escolhaJogador(jogadaSegundoJogador, getImageViewJogadorDois);
+                    }
+                    new RegraGanhador(context, firebaseDatabase, salaNome, getImageViewJogadorUm, getImageViewJogadorDois, jogadaPrimeiroJogador, jogadaSegundoJogador,
+                            getTextViewResultado, radioGroup, radioGroupNerd);
                 }
             }
 
@@ -70,7 +84,7 @@ public class OpcaoSelecionada {
     }
 
     private void escolhaJogador(String escolhaJogador, ImageView getImage) {
-        switch (escolhaJogador){
+        switch ( escolhaJogador ) {
             case PEDRA:
                 getImage.setImageResource(R.drawable.img_pedra);
                 break;
@@ -87,7 +101,6 @@ public class OpcaoSelecionada {
                 getImage.setImageResource(R.drawable.img_spock);
                 break;
         }
-
     }
 
     /*private void escolhaJogadorDois(ImageView getImage, String escolhaJogadorDois) {

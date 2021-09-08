@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -24,7 +23,6 @@ import com.game.jokenponerd.componentes.NomeJogadorDois;
 import com.game.jokenponerd.componentes.OpcaoSelecionada;
 import com.game.jokenponerd.helper.GerenciadorDialogos;
 import com.game.jokenponerd.helper.GerenciadorSharedPreferences;
-import com.game.jokenponerd.model.Entity.PlacarUsuario;
 import com.game.jokenponerd.model.Jogada.Jogada;
 import com.game.jokenponerd.model.repositorio.PlacarUsuarioRepositorio;
 import com.game.jokenponerd.model.repositorio.UsuarioRepositorio;
@@ -33,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import static com.game.jokenponerd.helper.Constantes.JOGADOR_DOIS;
 import static com.game.jokenponerd.helper.Constantes.LAGARTO;
@@ -52,7 +52,6 @@ public class JogoActivity extends AppCompatActivity{
     private RadioGroup radioGroupNerd;
     private Button btnJokenpo;
     private String escolhaJogador;
-    private final PlacarUsuario placarUsuario = new PlacarUsuario();
     private ConstraintLayout constraintLayoutNerd;
 
     private FirebaseDatabase firebaseDatabase;
@@ -81,25 +80,26 @@ public class JogoActivity extends AppCompatActivity{
     }
 
     private void recuperaNomePrimeiroJogador() {
-        DatabaseReference roomsRef = firebaseDatabase.getReference();
-        roomsRef.child("salas").child(salaNome).child("player1").child("nome").get().addOnCompleteListener(task -> {
-            jogador_um = String.valueOf(task.getResult().getValue());
-            if(jogador_um==null){
-                jogador_um = GerenciadorSharedPreferences.getNomeUsuario(this);
-            }
-            recuperaNomeSegundoJogador();
-        });
+        if(salaNome!=null) {
+            DatabaseReference roomsRef = firebaseDatabase.getReference();
+            roomsRef.child("salas").child(salaNome).child("player1").child("nome").get().addOnCompleteListener(task -> {
+                jogador_um = String.valueOf(Objects.requireNonNull(task.getResult()).getValue());
+                recuperaNomeSegundoJogador();
+            });
+        }
     }
 
     private void recuperaNomeSegundoJogador() {
-        DatabaseReference roomsRef = firebaseDatabase.getReference();
-        roomsRef.child("salas").child(salaNome).child("player2").child("nome").get().addOnCompleteListener(task -> {
-            nomeSegundoJogador = String.valueOf(task.getResult().getValue());
-            if(nomeSegundoJogador.equals("null")){
-                nomeSegundoJogador = casoJogadorDoisNull();
-            }
-            view(jogador_um, nomeSegundoJogador);
-        });
+        if(salaNome!=null) {
+            DatabaseReference roomsRef = firebaseDatabase.getReference();
+            roomsRef.child("salas").child(salaNome).child("player2").child("nome").get().addOnCompleteListener(task -> {
+                nomeSegundoJogador = String.valueOf(Objects.requireNonNull(task.getResult()).getValue());
+                if (nomeSegundoJogador.equals("null")) {
+                    nomeSegundoJogador = casoJogadorDoisNull();
+                }
+                view(jogador_um, nomeSegundoJogador);
+            });
+        }
     }
 
     public String casoJogadorDoisNull(){
@@ -116,19 +116,22 @@ public class JogoActivity extends AppCompatActivity{
     }
 
     private void addRoomsEventListener(String player, TextView tvJogador) {
-        DatabaseReference ref = firebaseDatabase.getReference("salas/"+salaNome+"/"+player);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Jogada nomeJogador = dataSnapshot.getValue(Jogada.class);
-                tvJogador.setText(nomeJogador.getNome());
-            }
+        if(salaNome!=null) {
+            DatabaseReference ref = firebaseDatabase.getReference("salas/" + salaNome + "/" + player);
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Jogada nomeJogador = dataSnapshot.getValue(Jogada.class);
+                    assert nomeJogador != null;
+                    tvJogador.setText(nomeJogador.getNome());
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+        }
     }
 
     private void view(String nomeUsuario, String nomeSegundoJogador) {
@@ -176,6 +179,7 @@ public class JogoActivity extends AppCompatActivity{
 
     public void setOpcaoSelecionada(){
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+
             if(checkedId==R.id.radioButtonPedra){
                 escolhaJogador = PEDRA;
             }else if(checkedId==R.id.radioButtonPapel){
@@ -245,19 +249,20 @@ public class JogoActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        sairTelaJogo();
+        //sairTelaJogo();
+        finishAffinity();
     }
 
     public void sairTelaJogo(){
-        DatabaseReference databaseReference;
-        if(GerenciadorSharedPreferences.getCriouSala(this)){
-            databaseReference = firebaseDatabase.getReference("salas/" + salaNome + "/" + "player1" + "/jogada");
-            databaseReference.setValue(null);
-        }else {
-            databaseReference = firebaseDatabase.getReference("salas/" + salaNome +"/" +"player2"+ "/jogada");
+        if(salaNome!=null) {
+            DatabaseReference databaseReference;
+            if (GerenciadorSharedPreferences.getCriouSala(this)) {
+                databaseReference = firebaseDatabase.getReference("salas/" + salaNome + "/" + "player1" + "/jogada");
+            } else {
+                databaseReference = firebaseDatabase.getReference("salas/" + salaNome + "/" + "player2" + "/jogada");
+            }
             databaseReference.setValue(null);
         }
-        finishAffinity();
     }
 
     public void mostrarPlacar(MenuItem item) {
@@ -297,6 +302,6 @@ public class JogoActivity extends AppCompatActivity{
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        finishAffinity();
+        sairTelaJogo();
     }
 }
